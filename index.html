@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Học Đầu Tư Chứng Khoán</title>
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--text:#1d2330;--muted:#6b7385;--line:#e3e6ec;--accent:#2563eb;--ok:#16a34a;--warn:#d97706}
-@media (prefers-color-scheme:dark){:root{--bg:#12151c;--card:#1b2029;--text:#e7eaf0;--muted:#8d96a8;--line:#2c3340;--accent:#5b8cff;--ok:#34d399;--warn:#fbbf24}}
+:root{--bg:#f6f7f9;--card:#fff;--text:#1d2330;--muted:#6b7385;--line:#e3e6ec;--accent:#2563eb;--ok:#16a34a;--warn:#d97706;--up:#16a34a;--down:#dc2626;--ref:#ca8a04;--ceil:#9333ea;--floor:#0891b2;--c2:#ea580c;--c3:#db2777}
+@media (prefers-color-scheme:dark){:root{--bg:#12151c;--card:#1b2029;--text:#e7eaf0;--muted:#8d96a8;--line:#2c3340;--accent:#5b8cff;--ok:#34d399;--warn:#fbbf24;--up:#34d399;--down:#f87171;--ref:#facc15;--ceil:#c084fc;--floor:#22d3ee;--c2:#fb923c;--c3:#f472b6}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 header{padding:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;max-width:960px;margin:0 auto}
@@ -45,6 +45,34 @@ th{color:var(--muted);font-weight:600}
 .chart div{flex:1;text-align:center;font-size:11px;color:var(--muted)}
 .chart i{display:block;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px}
 .hide{display:none}
+.lesson{line-height:1.65}
+.lesson h3{font-size:17px;margin:22px 0 8px}
+.lesson h4{font-size:15px;margin:16px 0 6px}
+.lesson table{margin:10px 0}
+.lesson td,.lesson th{border:1px solid var(--line)}
+.lesson .tip,.lesson .ex,.lesson .key,.lesson .warn{border-radius:10px;padding:12px 14px;margin:14px 0;border-left:4px solid}
+.lesson .tip{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,transparent)}
+.lesson .ex{border-color:var(--up);background:color-mix(in srgb,var(--up) 9%,transparent)}
+.lesson .key{border-color:var(--ref);background:color-mix(in srgb,var(--ref) 10%,transparent)}
+.lesson .warn{border-color:var(--down);background:color-mix(in srgb,var(--down) 9%,transparent)}
+.fig{margin:16px 0;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);text-align:center}
+.fig svg{width:100%;max-width:680px;height:auto;display:block;margin:0 auto}
+.fig figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+.weeks{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-bottom:12px}
+.weeks button{border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px;border-radius:8px;cursor:pointer;font:inherit;text-align:left}
+.weeks button.on{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.weeks small{display:block;color:var(--muted)}
+.ls{display:flex;gap:10px;align-items:center;padding:10px 6px;border-top:1px solid var(--line);cursor:pointer}
+.ls:hover .lt{color:var(--accent)}
+.ls .d{flex:none;width:44px;font-size:12px;color:var(--muted)}
+.ls .ck{flex:none;width:22px;text-align:center}
+.ls.cur{background:color-mix(in srgb,var(--accent) 10%,transparent);border-radius:8px}
+.q{border-top:1px solid var(--line);padding:12px 0}
+.q label{display:block;padding:6px 8px;border-radius:6px;cursor:pointer}
+.q label.right{background:color-mix(in srgb,var(--up) 18%,transparent)}
+.q label.wrong{background:color-mix(in srgb,var(--down) 18%,transparent)}
+.q .why{margin-top:6px;font-size:14px;color:var(--muted)}
+.pager{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:12px}
 </style>
 </head>
 <body>
@@ -55,11 +83,16 @@ th{color:var(--muted);font-weight:600}
 <nav id="nav"></nav>
 <main id="main"></main>
 
+<script src="lessons/m1.js"></script>
+<script src="lessons/m2.js"></script>
+<script src="lessons/m3.js"></script>
+<script src="lessons/m4.js"></script>
+<script src="lessons/refs.js"></script>
 <script>
 // ===== Lộ trình (lấy từ file "Lộ trình đầu tư chứng khoán.txt") =====
 const ROADMAP = [
  {m:"Tháng 1: Nền tảng và mở tài khoản", items:[
-  ["t1w1","Tuần 1: Hiểu thị trường","Cổ phiếu, VN-Index, VN30, HOSE/HNX/UPCoM, T+2, biên độ, lệnh LO/ATO/ATC/MP. Mở tài khoản eKYC."],
+  ["t1w1","Tuần 1: Hiểu thị trường","Cổ phiếu, VN-Index, VN30, HOSE/HNX/UPCoM, T+2, biên độ, lệnh LO/ATO/ATC/MTL. Mở tài khoản eKYC."],
   ["t1w2","Tuần 2: Làm quen công cụ","Cài app giao dịch, CafeF/Vietstock/FireAnt/Simplize. Lập watchlist 10 mã VN30."],
   ["t1w3","Tuần 3-4: Đọc tin và vĩ mô","15 phút/ngày đọc tin; lãi suất, tỷ giá, khối ngoại. Sách: Nhà đầu tư thông minh."]]},
  {m:"Tháng 2: Phân tích cơ bản", items:[
@@ -85,8 +118,11 @@ const DAY_GOAL = d => (d===0||d===6) ? 240 : 120; // phút
 
 // ===== Trạng thái =====
 const LS="invest-state", CFG="invest-gh";
-let state = {done:{}, logs:[], notes:[]};
-let cfg = JSON.parse(localStorage.getItem(CFG)||"{}"); // {repo, token, branch}
+// Bộ nhớ trình duyệt có thể bị chặn (chế độ riêng tư...), khi đó web vẫn chạy nhưng không nhớ dữ liệu
+const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}},del:k=>{try{localStorage.removeItem(k)}catch(e){}}};
+const EMPTY = ()=>({done:{}, logs:[], notes:[], lessons:{}, quiz:{}, start:""});
+let state = EMPTY();
+let cfg = JSON.parse(store.get(CFG)||"{}"); // {repo, token, branch}
 let sha = null, tab = "home", saveTimer=null;
 const $ = s=>document.querySelector(s);
 const today = ()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
@@ -109,8 +145,8 @@ async function pull(){
     if(r.status===404){ sha=null; setSync("Repo chưa có data.json, sẽ tạo khi lưu"); return; }
     if(!r.ok) throw new Error(r.status);
     const j = await r.json(); sha=j.sha;
-    state = Object.assign({done:{},logs:[],notes:[]}, JSON.parse(b64d(j.content)));
-    localStorage.setItem(LS,JSON.stringify(state));
+    state = Object.assign(EMPTY(), JSON.parse(b64d(j.content)));
+    store.set(LS,JSON.stringify(state));
     setSync("✓ Đã đồng bộ GitHub"); render();
   }catch(e){ setSync("⚠ Lỗi tải GitHub: "+why(e.message)+". Đang dùng dữ liệu trên máy"); }
 }
@@ -129,7 +165,7 @@ async function push(retry=true){
   }catch(e){ setSync("⚠ Lưu GitHub thất bại: "+why(e.message)+". Dữ liệu vẫn nằm trên máy"); }
 }
 function save(){
-  localStorage.setItem(LS,JSON.stringify(state));
+  store.set(LS,JSON.stringify(state));
   clearTimeout(saveTimer); saveTimer=setTimeout(push,1200);
 }
 
@@ -146,19 +182,97 @@ function last7(){
     const k=d.toISOString().slice(0,10); return {k,day:d.getDay(),min:minutesOn(k)}; });
 }
 
-// ===== Giao diện =====
-const TABS=[["home","Tổng quan"],["road","Lộ trình"],["log","Nhật ký học"],["notes","Ghi chú"],["plan","Lịch học"],["set","Cài đặt GitHub"]];
-function renderNav(){ $("#nav").innerHTML=TABS.map(([k,n])=>`<button class="${tab===k?"on":""}" data-t="${k}">${n}</button>`).join(""); }
-document.addEventListener("click",e=>{ const t=e.target.dataset?.t; if(t){tab=t;render();} });
+// ===== Bài học (nạp từ lessons/*.js) =====
+const LESSONS = (window.LESSONS||[]).slice().sort((a,b)=>a.week-b.week||a.day-b.day);
+const WEEKS = [...new Set(LESSONS.map(l=>l.week))];
+const DAYN = ["","Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7","CN"];
+const WEEK_NAME = {1:"Hiểu thị trường",2:"Làm quen công cụ",3:"Vĩ mô (1)",4:"Vĩ mô (2)",5:"Báo cáo tài chính (1)",6:"Báo cáo tài chính (2)",7:"Định giá",8:"Phân tích ngành",9:"Phân tích kỹ thuật (1)",10:"Phân tích kỹ thuật (2)",11:"Quản lý vốn",12:"Giả lập & tâm lý",13:"Chuẩn bị đầu tư thật",14:"ETF & DCA",15:"Xây danh mục",16:"Đánh giá & duy trì"};
+let lessonId = null, viewWeek = null;
+function refsHtml(w){
+  const r=(window.REFS||{})[w]; if(!r||!r.length) return "";
+  return `<div class="card"><h2>📚 Tài liệu tham khảo tuần ${w}</h2>${r.map(x=>`<div class="entry"><div>${x.type==="book"?"📕":"🌐"} <a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>${x.author?` <span class="muted">· ${esc(x.author)}</span>`:""}<p class="muted">${esc(x.note||"")}</p></div></div>`).join("")}</div>`;
+}
+// Bài theo lịch: tính từ ngày bắt đầu (thứ 2 của tuần 1); chưa đặt thì lấy bài đầu tiên chưa học
+function scheduled(){
+  if(state.start){
+    const days = Math.floor((new Date(today()) - new Date(state.start))/864e5);
+    if(days>=0){ const w=Math.floor(days/7)+1, d=days%7+1; const l=LESSONS.find(x=>x.week===w&&x.day===d); if(l) return l; }
+  }
+  return LESSONS.find(x=>!state.lessons[x.id]) || null;
+}
+const mondayOf = s=>{ const d=new Date(s); d.setDate(d.getDate()-(d.getDay()+6)%7); return d.toISOString().slice(0,10); };
+function openLesson(id){ lessonId=id; tab="learn"; render(); scrollTo(0,0); }
 
-function render(){ renderNav(); ({home,road,log,notes,plan,set}[tab])(); }
+function learn(){
+  if(!LESSONS.length){ $("#main").innerHTML=`<div class="card">Chưa nạp được bài học. Kiểm tra thư mục <code>lessons/</code> nằm cạnh <code>index.html</code>.</div>`; return; }
+  if(lessonId) return lessonView();
+  const cur=scheduled(); viewWeek = viewWeek || (cur?cur.week:1);
+  const wl=LESSONS.filter(l=>l.week===viewWeek);
+  $("#main").innerHTML=`
+  <div class="card"><h2>Chọn tuần</h2><div class="weeks">${WEEKS.map(w=>{
+    const ls=LESSONS.filter(l=>l.week===w), d=ls.filter(l=>state.lessons[l.id]).length;
+    return `<button data-w="${w}" class="${w===viewWeek?"on":""}">Tuần ${w} ${d===ls.length?"✅":""}<small>${esc(WEEK_NAME[w]||"")} · ${d}/${ls.length}</small></button>`;}).join("")}</div></div>
+  <div class="card"><h2>Tuần ${viewWeek}: ${esc(WEEK_NAME[viewWeek]||"")}</h2>${wl.map(l=>`
+    <div class="ls ${cur&&cur.id===l.id?"cur":""}" data-l="${l.id}"><span class="ck">${state.lessons[l.id]?"✅":"⬜"}</span><span class="d">${DAYN[l.day]}</span>
+    <div><b class="lt">${esc(l.title)}</b>${cur&&cur.id===l.id?' <span class="muted">← hôm nay</span>':""}<br><small class="muted">${esc(l.summary||"")} · ${l.minutes} phút${state.quiz[l.id]!=null?` · Quiz ${state.quiz[l.id]}/${l.quiz.length}`:""}</small></div></div>`).join("")}</div>${refsHtml(viewWeek)}`;
+  document.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>{ viewWeek=+b.dataset.w; learn(); });
+  document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>openLesson(b.dataset.l));
+}
+
+function lessonView(){
+  const i=LESSONS.findIndex(l=>l.id===lessonId), l=LESSONS[i], prev=LESSONS[i-1], next=LESSONS[i+1];
+  const done=state.lessons[l.id];
+  $("#main").innerHTML=`
+  <div class="card"><button class="g" id="back">← Tuần ${l.week}</button>
+   <p class="muted" style="margin:12px 0 0">Tuần ${l.week} · ${DAYN[l.day]} · ${l.minutes} phút</p>
+   <h2 style="font-size:22px;margin:4px 0 0">${esc(l.title)}</h2></div>
+  <div class="card lesson">${l.body}</div>
+  <div class="card"><h2>📝 Kiểm tra nhanh (${l.quiz.length} câu)</h2>
+   ${l.quiz.map((q,qi)=>`<div class="q" data-q="${qi}"><b>${qi+1}. ${esc(q.q)}</b>${q.options.map((o,oi)=>`<label><input type="radio" name="q${qi}" value="${oi}"> ${esc(o)}</label>`).join("")}<div class="why hide"></div></div>`).join("")}
+   <p><button class="p" id="submit">Nộp bài</button> <span id="score" class="muted">${state.quiz[l.id]!=null?`Lần trước: ${state.quiz[l.id]}/${l.quiz.length}`:""}</span></p></div>
+  <div class="card">
+   ${done?`<p>✅ Đã học ngày ${done}.</p><button class="g" id="undo">Đánh dấu chưa học</button>`:
+   `<label style="display:block;margin-bottom:10px"><input type="checkbox" id="addlog" checked> Ghi ${l.minutes} phút vào nhật ký học hôm nay</label><button class="p" id="finish">✓ Hoàn thành buổi học</button>`}
+   <div class="pager">${prev?`<button class="g" data-l="${prev.id}">← ${esc(prev.title)}</button>`:"<span></span>"}${next?`<button class="g" data-l="${next.id}">${esc(next.title)} →</button>`:""}</div></div>
+  ${l.day>=6?refsHtml(l.week):""}`;
+  $("#back").onclick=()=>{ lessonId=null; viewWeek=l.week; learn(); };
+  document.querySelectorAll(".pager [data-l]").forEach(b=>b.onclick=()=>openLesson(b.dataset.l));
+  $("#submit").onclick=()=>{
+    let ok=0;
+    l.quiz.forEach((q,qi)=>{
+      const box=document.querySelector(`[data-q="${qi}"]`), pick=box.querySelector("input:checked");
+      box.querySelectorAll("label").forEach((lb,oi)=>{ lb.classList.remove("right","wrong"); if(oi===q.answer) lb.classList.add("right"); else if(pick&&+pick.value===oi) lb.classList.add("wrong"); });
+      if(pick&&+pick.value===q.answer) ok++;
+      const w=box.querySelector(".why"); w.textContent="💡 "+(q.explain||""); w.classList.remove("hide");
+    });
+    $("#score").textContent=`Kết quả: ${ok}/${l.quiz.length}`;
+    state.quiz[l.id]=ok; save();
+  };
+  if(done) $("#undo").onclick=()=>{ delete state.lessons[l.id]; save(); lessonView(); };
+  else $("#finish").onclick=()=>{
+    state.lessons[l.id]=today();
+    if($("#addlog").checked) state.logs.push({id:Date.now(),date:today(),min:l.minutes,topic:`Tuần ${l.week} - ${l.title}`,note:""});
+    save(); next?openLesson(next.id):lessonView();
+  };
+}
+
+// ===== Giao diện =====
+const TABS=[["home","Tổng quan"],["learn","Bài học"],["road","Lộ trình"],["log","Nhật ký học"],["notes","Ghi chú"],["plan","Lịch học"],["set","Cài đặt"]];
+function renderNav(){ $("#nav").innerHTML=TABS.map(([k,n])=>`<button class="${tab===k?"on":""}" data-t="${k}">${n}</button>`).join(""); }
+document.addEventListener("click",e=>{ const t=e.target.dataset?.t; if(t){ tab=t; if(t==="learn") lessonId=null; render(); } });
+
+function render(){ renderNav(); ({home,learn,road,log,notes,plan,set}[tab])(); }
 
 function home(){
   const done=ALL.filter(x=>state.done[x[0]]).length, pct=Math.round(done/ALL.length*100);
   const wk=last7(), wkMin=wk.reduce((a,x)=>a+x.min,0), td=minutesOn(today()), goal=DAY_GOAL(new Date().getDay());
   const max=Math.max(60,...wk.map(x=>x.min));
   const next=ALL.find(x=>!state.done[x[0]]);
+  const cur=scheduled(), ld=LESSONS.filter(l=>state.lessons[l.id]).length;
   $("#main").innerHTML=`
+  ${cur?`<div class="card"><h2>📖 Bài học hôm nay</h2><p class="muted" style="margin:0">Tuần ${cur.week} · ${DAYN[cur.day]} · ${cur.minutes} phút ${state.lessons[cur.id]?"· ✅ đã học":""}</p>
+   <p style="margin:4px 0 10px"><b>${esc(cur.title)}</b><br><span class="muted">${esc(cur.summary||"")}</span></p>
+   <button class="p" data-open="${cur.id}">Vào học</button> <span class="muted">Đã học ${ld}/${LESSONS.length} buổi${state.start?"":" · Đặt ngày bắt đầu ở tab Cài đặt để bài tự khớp lịch"}</span></div>`:""}
   <div class="grid">
    <div class="card stat"><b>${pct}%</b><span>Hoàn thành lộ trình (${done}/${ALL.length})</span><div class="bar"><i style="width:${pct}%"></i></div></div>
    <div class="card stat"><b>${fmt(td)}</b><span>Hôm nay / mục tiêu ${fmt(goal)}</span><div class="bar"><i style="width:${Math.min(100,td/goal*100)}%"></i></div></div>
@@ -167,6 +281,7 @@ function home(){
   </div>
   <div class="card"><h2>7 ngày gần nhất</h2><div class="chart">${wk.map(x=>`<div><i style="height:${x.min/max*90}px"></i>${["CN","T2","T3","T4","T5","T6","T7"][x.day]}<br>${x.min}'</div>`).join("")}</div></div>
   <div class="card"><h2>Việc tiếp theo</h2>${next?`<b>${esc(next[1])}</b><p class="muted">${esc(next[2])}</p>`:"🎉 Bạn đã hoàn thành toàn bộ lộ trình!"}</div>`;
+  const b=document.querySelector("[data-open]"); if(b) b.onclick=()=>openLesson(b.dataset.open);
 }
 
 function road(){
@@ -218,19 +333,23 @@ function plan(){
 }
 
 function set(){
-  $("#main").innerHTML=`<div class="card"><h2>Kết nối GitHub</h2>
+  $("#main").innerHTML=`<div class="card"><h2>Ngày bắt đầu học</h2>
+  <p class="muted">Chọn ngày bắt đầu tuần 1 (sẽ tự lùi về thứ 2 của tuần đó). Mỗi ngày web sẽ gợi ý đúng bài theo lịch.</p>
+  <div class="row"><input type="date" id="st" value="${state.start||""}"><button class="p" id="sts" style="flex:none">Lưu</button></div></div>
+  <div class="card"><h2>Kết nối GitHub</h2>
   <p class="muted">Dữ liệu được lưu thành <code>data.json</code> trong repo của bạn. Token chỉ lưu trong trình duyệt này, không đưa vào code.</p>
   <div class="row"><input type="text" id="cr" placeholder="tên-github/tên-repo" value="${esc(cfg.repo||"")}"><input type="text" id="cb" placeholder="branch (để trống = mặc định)" value="${esc(cfg.branch||"")}"></div>
   <input type="password" id="ct" placeholder="Personal Access Token (quyền Contents: Read and write)" value="${esc(cfg.token||"")}" style="margin-bottom:8px">
   <p><button class="p" id="cs">Lưu và đồng bộ</button> <button class="g" id="cx">Ngắt kết nối</button></p></div>
   <div class="card"><h2>Cách lấy token</h2><p class="muted">GitHub → Settings → Developer settings → Fine-grained tokens → chọn đúng repo này → Permissions: <b>Contents = Read and write</b>.</p></div>`;
+  $("#sts").onclick=()=>{ const v=$("#st").value; state.start=v?mondayOf(v):""; save(); set(); };
   $("#cs").onclick=async()=>{ cfg={repo:$("#cr").value.trim(),branch:$("#cb").value.trim(),token:$("#ct").value.trim()};
-    localStorage.setItem(CFG,JSON.stringify(cfg)); await pull(); if(!sha) await push(); };
-  $("#cx").onclick=()=>{ cfg={}; sha=null; localStorage.removeItem(CFG); setSync("Chưa kết nối GitHub (đang lưu trên trình duyệt)"); set(); };
+    store.set(CFG,JSON.stringify(cfg)); await pull(); if(!sha) await push(); };
+  $("#cx").onclick=()=>{ cfg={}; sha=null; store.del(CFG); setSync("Chưa kết nối GitHub (đang lưu trên trình duyệt)"); set(); };
 }
 
 // ===== Khởi động =====
-try{ Object.assign(state,JSON.parse(localStorage.getItem(LS)||"{}")); }catch(e){}
+try{ Object.assign(state,JSON.parse(store.get(LS)||"{}")); }catch(e){}
 render();
 pull();
 </script>

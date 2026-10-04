@@ -9,6 +9,12 @@ Web quản lý việc học. Dữ liệu lưu trong `data.json` của repo priva
 
 Mỗi thay đổi sẽ tự động commit vào `data.json`, nên lịch sử học tập được lưu trong git.
 
+## Bài học
+- `lessons/m1.js` … `m4.js`: 112 buổi học (16 tuần × 7 buổi), có hình minh họa SVG, ví dụ và quiz.
+- `lessons/refs.js`: sách và tài liệu tham khảo theo tuần.
+- Quy định thị trường đối chiếu với nguồn chính thức tại thời điểm 10/2026; có thể thay đổi, hãy kiểm tra lại với CTCK/HOSE.
+- Tab **Cài đặt** → "Ngày bắt đầu học" để web tự gợi ý bài theo lịch.
+
 ## Muốn xem trên điện thoại sau này
 Tạo thêm repo public `invest-study` chỉ chứa `index.html` và bật GitHub Pages,
 chuyển dữ liệu sang repo private riêng (ví dụ `invest-study-data`) rồi nhập tên repo đó ở tab Cài đặt.
