@@ -99,6 +99,7 @@ const hdr = ()=>({Authorization:`Bearer ${cfg.token}`,Accept:"application/vnd.gi
 const b64e = s=>btoa(String.fromCharCode(...new TextEncoder().encode(s)));
 const b64d = s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")),c=>c.charCodeAt(0)));
 const setSync = t=>$("#sync").textContent=t;
+const why = c=>({"401":"token sai hoặc đã hết hạn","403":"token chưa có quyền Contents: Read and write","404":"không tìm thấy repo, kiểm tra tên repo và repo đã được chọn cho token"}[c]||"mã "+c);
 
 async function pull(){
   if(!cfg.repo||!cfg.token) return;
@@ -111,7 +112,7 @@ async function pull(){
     state = Object.assign({done:{},logs:[],notes:[]}, JSON.parse(b64d(j.content)));
     localStorage.setItem(LS,JSON.stringify(state));
     setSync("✓ Đã đồng bộ GitHub"); render();
-  }catch(e){ setSync("⚠ Lỗi tải GitHub ("+e.message+"), dùng dữ liệu trên máy"); }
+  }catch(e){ setSync("⚠ Lỗi tải GitHub: "+why(e.message)+". Đang dùng dữ liệu trên máy"); }
 }
 async function push(retry=true){
   if(!cfg.repo||!cfg.token) return;
@@ -125,7 +126,7 @@ async function push(retry=true){
     }
     if(!r.ok) throw new Error(r.status);
     sha=(await r.json()).content.sha; setSync("✓ Đã lưu lên GitHub");
-  }catch(e){ setSync("⚠ Lưu GitHub thất bại ("+e.message+"), dữ liệu vẫn nằm trên máy"); }
+  }catch(e){ setSync("⚠ Lưu GitHub thất bại: "+why(e.message)+". Dữ liệu vẫn nằm trên máy"); }
 }
 function save(){
   localStorage.setItem(LS,JSON.stringify(state));
